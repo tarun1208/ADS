@@ -1,47 +1,51 @@
 import java.util.*;
-import java.util.LinkedList;
-public class DFSAdjList 
-{
-    private int vertex;
-    private LinkedList<Integer>[] adj;
-    DFSAdjList(int vertex)
-    {
-        this.vertex=vertex;
-        adj=new LinkedList[vertex];
-        for(int i=0;i<vertex;i++)
-        {
-            adj[i]=new LinkedList<>();
+public class DFSAdjList {
+    LinkedList<Integer> adj[];
+    int v;
+    DFSAdjList(int v){
+        this.v=v;
+        adj = new LinkedList[v];
+        for(int i=0;i<v;i++){
+            adj[i] = new LinkedList<>();
         }
     }
-    public void addadj(int u,int v)
-    {
-        adj[u].add(v);
-        adj[v].add(u);
+    public void Add(int src,int dest){
+        adj[src].add(dest);
+        adj[dest].add(src);
     }
-    public void dfsutil(int node,boolean[] visited)
-    {
-        visited[node]=true;
-        System.out.println(node+" ");
-        for(int num:adj[node])
-        {
-            if(!visited[num])
-            {
-                dfsutil(num,visited);
+    public void DFS(int start){
+        boolean visited[] = new boolean[v];
+        Arrays.fill(visited,false);
+        Stack<Integer> s = new Stack<>();
+        s.push(start);
+        visited[start]=true;
+        while(!s.isEmpty()){
+            int w =s.pop();
+            System.out.print(w+" ");
+            for(int i:adj[w]){
+                if(!visited[i]){
+                    s.push(i);
+                    visited[i]=true;
+                }
             }
         }
+
     }
-    public void dfs(int start)
-    {
-        boolean[] visited=new boolean[vertex];
-        dfsutil(start,visited);
-    }
-    public static void main(String[] args) 
-    {
-        DFSAdjList obj=new DFSAdjList(10);
-        obj.addadj(0,1);
-        obj.addadj(1,2);
-        obj.addadj(2,3);  
-        System.out.println("dfs adjacent list");
-        obj.dfs(0);  
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int src,dest;
+        System.out.println("enter no vertices and edges:");
+        int v = sc.nextInt();
+        int e = sc.nextInt();
+        DFSAdjList b = new DFSAdjList(v);
+        System.out.println("enter src and dest:");
+        for(int i =0;i<e;i++) {
+            src = sc.nextInt();
+            dest = sc.nextInt();
+            b.Add(src,dest);
+        }
+        System.out.println("enter starting vertex:");
+         int start = sc.nextInt();
+         b.DFS(start);
     }
 }
