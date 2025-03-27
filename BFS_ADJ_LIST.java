@@ -1,59 +1,50 @@
 import java.util.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
-public class BSTAdjList 
-{
-    private int vertex;
-    public List<Integer>[] adj;
-    @SuppressWarnings("unchecked")
-    BSTAdjList(int vertex)
-    {
-        this.vertex=vertex;
-        adj = (ArrayList<Integer>[]) new ArrayList[vertex];
-        for(int i=0;i<vertex;i++)
-        {
-            adj[i]=new ArrayList<>();
-        }
+public class BFSAdjList {
+    LinkedList<Integer> adj[];
+    int v;
+    BFSAdjList(int v){
+        this.v = v;
+        adj = new LinkedList[v];
+        for(int i=0;i<v;i++)
+            adj[i]= new LinkedList<>();
     }
-    public void addadj(int u,int v)
-    {
-        if (u >= 0 && u < vertex && v >= 0 && v < vertex)
-        {
-        adj[u].add(v);
-        adj[v].add(u);
-        }
-    }
-    public void Bst(int start)
-    {
-        boolean[] visited =new boolean[vertex];
-        Queue<Integer> queue=new LinkedList<>();
-        visited[start]=true;
-        queue.add(start);
-        while(!queue.isEmpty())
-        {
-            int node=queue.poll();
-            System.out.print(node+" ");
-            for(int num:adj[node])
-            {
-                if(!visited[num])
-                {
-                    visited[num]=true;
-                    queue.add(num);
-                }
+    public void Add(int src,int dest){
+        adj[src].add(dest);
+        adj[dest].add(src);
+  }
+    public void BFS(int start){
+       boolean visted[] =new boolean[v];
+       Arrays.fill(visted,false);
+       Queue<Integer> q = new LinkedList<>();
+       q.add(start);
+       visted[start] = true;
+       while(!q.isEmpty()){
+        int w = q.poll();
+        System.out.print(w+" ");
+        for(int i:adj[w]){
+            if(!visted[i]){
+                visted[i] =true;
+                q.add(i);
             }
         }
+       }
     }
-    public static void main(String[] args) 
-    {
-        BSTAdjList obj=new BSTAdjList(10);
-        obj.addadj(0, 1);
-        obj.addadj(1,2);
-        obj.addadj(2,3);
-        System.out.println("the adjacent ");
-        obj.Bst(0);
-    }
-
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int src,dest;
+        System.out.println("enter no vertices and edges:");
+        int v = sc.nextInt();
+        int e = sc.nextInt();
+        BFSAdjList b = new BFSAdjList(v);
+        System.out.println("enter src and dest:");
+        for(int i =0;i<e;i++) {
+            src = sc.nextInt();
+            dest = sc.nextInt();
+            b.Add(src,dest);
+        }
+        System.out.println("enter starting vertex:");
+         int start = sc.nextInt();
+         b.BFS(start);
+}
 }
